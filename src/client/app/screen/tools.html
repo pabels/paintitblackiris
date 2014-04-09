@@ -1,0 +1,85 @@
+<div>
+<div class="container">
+
+      <div class="row">
+
+        <div class="col-lg-12">
+          <h1 class="page-header">Herramientas <small>Añadir archivos/Proyectos</small></h1>
+          <ol class="breadcrumb">
+            <li><a href="index.html">Home</a></li>
+            <li class="active">Herramientas</li>
+          </ol>
+        </div>
+
+      </div>
+
+      <div class="row">
+
+        <div class="col-lg-8">
+
+          <h1><a  href="">Subir Imagenes</a></h1>
+          <p class="lead">formato: <a href="#">JPEG, GIF.</a></p>
+          <hr>
+          <hr>
+          <img src="http://placehold.it/900x300" class="img-responsive" id="image" onchange="handleFiles();">
+          <hr>
+          <p>Puedes subir mas imagenes y ayudarnos a aumentar nuestra coleccion de coches; acuerdate de que esten en formato adecuado: jpeg o gif.</p>
+          <form enctype="multipart/form-data" action="../server/upload.php" method="POST">
+          <input type="hidden" name="MAX_FILE_SIZE" value="20000000">
+          <input name="uploadedfile" type="file" id="input">
+          <input type="submit" class="btn btn-primary" value="Subir Imagen >" name="imagen">
+          <hr>
+
+          <h1><a href="#">Añadir proyecto</a></h1>
+          <p class="lead">hecho por <a href="#">ti</a></p>
+          <hr>
+          <hr>
+          <img src="http://placehold.it/900x300" class="img-responsive">
+          <hr>
+          <p>Sube tu proyecto y compartelo con todos!.</p>
+          <input type=submit class="btn btn-primary" value="Subir Proyecto >" name="proyecto">
+          </form>
+          <hr>
+          <hr>
+
+          
+
+        </div>
+
+        <div class="col-lg-4">
+         
+        </div>
+      </div>
+
+    </div>
+
+    <div class="container">
+
+      <hr>
+
+      <footer>
+        <div class="row">
+          <div class="col-lg-12">
+            <p>Copyright &copy; Paint it Black!</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Paint it Black!</h4>
+      </div>
+      <div class="modal-body">
+       Nombre de usuario: <input type="text" name="userName"> Contraseña: <input type="password" name="userPassword">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary">Entrar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</div>
