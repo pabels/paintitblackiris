@@ -1,14 +1,16 @@
 iris.screen(function(self) {
-	self.create = function() {
 
-		self.tmpl(iris.path.screen.workshop.html);
-		console.log("Screen Created workshop");
-			
-	};
-	
-	self.awake = function() {
-		console.log("Screen Awaked workshop");
-		var carListWorkshop = new Array();
+  self.create = function() {
+
+    self.tmpl(iris.path.screen.workshop.html);
+   
+    console.log("screen workshop created ");
+
+  };
+  self.awake = function() {
+    console.log("screen workshop Awaked");
+    //location.reload();
+    var carListWorkshop = new Array();
 		carListWorkshop[0] = "img/astonmartin1.jpg";
 		carListWorkshop[1] = "img/audi1.jpg";
 		carListWorkshop[2] = "img/jeep4.jpg";
@@ -27,8 +29,7 @@ iris.screen(function(self) {
 			});
 		}
 		load();
-	};
 
+  };
 }, iris.path.screen.workshop.js);
-
 

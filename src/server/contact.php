@@ -40,27 +40,43 @@ function is_email($cadena){
         } else {
         return false;
         }
-    }
+}
 
-    
+function checkuser($username, $userpass){
+
+    define("Servidor","localhost");
+    define("User","root");
+    define("Pass","");
+    $conexion=mysql_connect(Servidor,User,Pass) or die ("Error");
+    mysql_select_db("black",$conexion);
+    $query="select name from user where name=$username and pass=$userpass";
+    $res=mysql_query($query,$conexion);
+    mysql_close($conexion);
+    if($res==false){
+        return false;
+    }else{
+        return true;
+    }
+}
 
 
 if(isset($_POST['name']) && $_POST['name']!="" && isset($_POST['email']) && isset($_POST['message']) && $_POST['message']!=""){
+    $username=$_POST['name'];
+    $userpass=$_POST['password'];
+    $email=$_POST['email'];
+    $cuerpo="Mensaje del usuario: <b>$_POST[name]</b> con email: $_POST[email]."."<br>".$_POST['message'];
 
-        $email=$_POST['email'];
-        $cuerpo="Mensaje del usuario: <b>$_POST[name]</b> con email: $_POST[email]."."<br>".$_POST['message'];
-
-        if(is_email($email)){
-        send_mail($email,$cuerpo);
-        header('Refresh: 3; ../client/contact.html');
-        echo 'Se ha enviado el mensaje correctamente.';
-        }
-        else{ 
-            echo 'Escribe un correo valido.<br><a href=../client/contact.html>Volver</a>';
-        } 
+    if(is_email($email) && checkuser($username, $userpass)){
+    send_mail($email,$cuerpo);
+    header('Refresh: 3; ../client/index.html#/contact');
+    echo 'Se ha enviado el mensaje correctamente.';
     }
-    else{
-        echo 'Rellena todos los campos con * <br><a href=../client/contact.html>Volver</a>';
-    }
+    else{ 
+        echo 'Usuario o contraseña incorrecto.<br><a href=../client/index.html#/contact>Volver</a>';
+    } 
+}
+else{
+    echo 'Rellena todos los campos con * <br><a href=../client/index.html#/contact>Volver</a>';
+}
 
 ?>

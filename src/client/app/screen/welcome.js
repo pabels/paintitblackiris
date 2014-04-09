@@ -3,7 +3,7 @@ iris.screen(function(self) {
 		
 		self.tmpl(iris.path.screen.welcome.html);
 		//self.ui("contenedor",iris.path.ui.menu.js); Mañana preguntar a surtich de como poner un index.
-		self.screens("contenedor", [["star",iris.path.screen.star.js],["tools",iris.path.screen.tools.js], ["contact",iris.path.screen.contact.js],["proyects",iris.path.screen.proyects.js],["car_gallery",iris.path.screen.car_gallery.js],["foro",iris.path.screen.foro.js],["registro",iris.path.screen.registro.js]]);
+		self.screens("contenedor", [["star",iris.path.screen.star.js],["tools",iris.path.screen.tools.js], ["contact",iris.path.screen.contact.js],["proyects",iris.path.screen.proyects.js],["car_gallery",iris.path.screen.car_gallery.js],["foro",iris.path.screen.foro.js],["registro",iris.path.screen.registro.js],["workshop",iris.path.screen.workshop.js]]);
 		console.log("Created Start");
 		
 	};
