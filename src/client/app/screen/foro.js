@@ -9,8 +9,9 @@ iris.screen(function(self) {
   };
   self.awake = function() {
     console.log("screen foro Awaked");
-    //location.reload();
 
+    $('#votar').raty({ score: 1});
+   
   };
 }, iris.path.screen.foro.js);
 

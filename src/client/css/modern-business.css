@@ -1,16 +1,11 @@
-/* 
-Custom CSS for...
-'Modern Business'
-*/
 
-/* Global Styles */
 
 html, body {
   height:100%;
 }
 
 body {
-  padding-top: 50px; /* body padding for fixed top nav */
+  padding-top: 50px;
 }
 
 .img-home-portfolio,
@@ -33,7 +28,7 @@ body {
 }
 
 .section-colored {
-  background-color: #e1e1e1; /* change this to change the background color of a colored section */
+  background-color: #e1e1e1; 
 }
 
 .sidebar {
@@ -46,7 +41,7 @@ body {
   border: 1px solid #cccccc;
 }
 
-/* Half Page Height Carousel Customization */
+/
 .carousel {
   height: 50%;
 }
@@ -63,7 +58,6 @@ body {
   background-size: cover;
 }
 
-/* Social Icons Styles */
 .list-social-icons {
   margin-bottom: 45px;
 }
@@ -89,17 +83,17 @@ body {
   color: #d14836;
 }
 
-/* Service Page Styles */
+
 .service-icon {
   font-size: 50px;
 }
 
-/* 404 Page Styles */
+
 .error-404 {
   font-size: 8em;
 }
 
-/* Pricing Page Styles */
+
 .price {
   font-size: 4em;
 }
@@ -114,7 +108,7 @@ body {
   font-style: italic;
 }
 
-/* Footer Styles */
+
 footer {
   margin: 50px 0;
 }
@@ -158,4 +152,29 @@ footer {
 
 .icon{
   width: 7%;
-  height: 7%
+  height: 7%;
+}
+
+.forum-post{
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: grey;
+  background-color: white;
+  padding: 6px;
+  overflow: scroll;
+}
+
+.forum-comment{
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: grey;
+  background-color: white;
+  padding: 6px;
+}
+
+.votar{
+  width: 3.5%;
+  height: 3.5%;
+}
