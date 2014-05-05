@@ -52,8 +52,7 @@ La funcionalidad del foro sera la siguiente:
 3. Habra un buscador tanto por tag como por nombre o palabra clave del post.
 4. Otros usuarios pueden comentar un post.
 5. Otros usuarios pueden votar la calidad del post
-6. El creador del post no puede comentar pero si responder comentarios.
-7. El creador puede editar y eliminar sus post
+
 
 
 

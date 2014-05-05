@@ -1,10 +1,10 @@
 <?php
 
-    function enviar($nombre,$password,$email){
+    function registrar($nombre,$password,$email){
 
-        define("Servidor","127.11.174.130:3306");
-        define("User","admintjegPEX");
-        define("Pass","uZr93IWebeVY");
+        define("Servidor","localhost");
+        define("User","root");
+        define("Pass","");
         $conexion=mysql_connect(Servidor,User,Pass) or die ("Error, algo no ha ido bien");
         mysql_select_db("black",$conexion);
         $query="insert into user values("."'".$nombre."', "."'".$password."', "."'".$email."',0)";
@@ -21,14 +21,14 @@
         }
     }
 
-    if(isset($_POST['nombre']) && $_POST['nombre']!="" && isset($_POST['password']) && $_POST['password']!="" && isset($_POST['email'])){
+    if(isset($_POST['name']) && $_POST['name']!="" && isset($_POST['pass']) && $_POST['pass']!="" && isset($_POST['mail'])){
 
-        $nombre=$_POST['nombre'];
-        $password=$_POST['password'];
-        $email=$_POST['email'];
+        $nombre=$_POST['name'];
+        $password=$_POST['pass'];
+        $email=$_POST['mail'];
 
         if(is_email($email)){
-        enviar($nombre,$password,$email);
+        registrar($nombre,$password,$email);
         header('Refresh: 3; ../client/registro.html');
         echo 'Se ha registrado correctamente';
         }

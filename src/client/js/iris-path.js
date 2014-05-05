@@ -10,6 +10,13 @@ iris.path = {
 		registro: { js: "screen/registro.js", html: "screen/registro.html"},
 		foro: { js: "screen/foro.js", html: "screen/foro.html"},
 		workshop : { js: "screen/workshop.js", html: "screen/workshop.html"},
+	},
+	resource: {
+		resource : "resource/resource.js"
+	},
+
+	ui: {
+		logger : { js: "ui/logger.js", html: "ui/logger.html"}
 	}
 	
 };
