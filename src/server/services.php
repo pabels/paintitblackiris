@@ -149,19 +149,29 @@
     function LogOut()
     {
         header('Content-Type: application/json');
-    	session_start();
+    	/*session_start();
         $_SESSION['loginUser']=NULL;
         unset($_SESSION['loginUser']);
+        session_destroy();
         $result = array("msg"=>"logout exitoso", "user"=>" $_SESSION[loginUser]");
-            echo json_encode($result);
+            echo json_encode($result);*/
+
+        if(!$_SESSION){
+            return json_encode("No tienes sesion");
+            
+        }else{
+            $_SESSION=null;
+            session_destroy();
+            return json_encode("Sesion terminada");
+        }
 
     }
 
-    function checkLogin()
-    {
-    	session_start();
+    function checkLogin(){
+        header('Content-Type: application/json');
        	if(isset($_SESSION['user']) && $_SESSION['user']!=""){
-       		echo $_SESSION['user'];
+            $result = array("user"=>" $_SESSION[loginUser]");
+       		return json_encode($result);
        	}
     }
 

@@ -16,7 +16,9 @@ iris.path = {
 	},
 
 	ui: {
-		logger : { js: "ui/logger.js", html: "ui/logger.html"}
+		logger : { js: "ui/logger.js", html: "ui/logger.html"},
+		post: { js:"ui/post.js", html: "ui/post.html"},
+		comment: { js:"ui/comment.js", html: "ui/comment.html"}
 	}
 	
 };

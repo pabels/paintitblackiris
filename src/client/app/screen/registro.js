@@ -16,6 +16,11 @@ var resource = iris.resource(iris.path.resource.resource);
       resource.register(name,user,pass,mail, function(data){
           console.log(data);
       });
+
+      self.get("name").val("");
+      self.get("user").val("");
+      self.get("pass").val("");
+      self.get("mail").val("");
     });
   };
   self.awake = function() {
