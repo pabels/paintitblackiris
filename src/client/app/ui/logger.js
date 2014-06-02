@@ -13,7 +13,7 @@ self.create = function() {
 
 
     	resource.login(userName,userPassword, function(data){
-        debugger
+       
         iris.notify("Sesion_iniciada",data.user);
        
       });
@@ -22,7 +22,6 @@ self.create = function() {
       self.get("userPassword").val("");
       
     });
-
 
 };
   

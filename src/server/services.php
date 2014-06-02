@@ -64,47 +64,58 @@
 
 	}
 
-    function SendUserConfirmationEmail($name,$email,$code)
-    {
-        $mail = new PHPMailer();
+   
 
-		$mail->IsSMTP();
-		$mail->SMTPAuth = true;
-		$mail->SMTPSecure = "ssl";
-		$mail->Host = "smtp.gmail.com";
-		$mail->Port = 465;
-		$mail->Username = "webpaintitblack@gmail.com";
-		$mail->Password = "paintitblack123456";
-		$mail->From = "webpaintitblack@gmail.com";
-		$mail->FromName = "Paintitblack";
-		$mail->addAddress($email);
-		$mail->Subject = "Tu Registro con Paint it Black";
-		$mail->Body ="Hola ".$name."\r\n\r\n".
-		"Gracias por tu Registración con Paint it Black\r\n"."\r\n GRACIAS!!";
+    function savePost(){
 
-		if (!$mail->send()) {
-	        echo "Error Mailer: " . $mail->ErrorInfo;
-	        return false;
-	    }
-		return true;
-    }
-
-    function ConfirmUser($code)
-    {
-        if(empty($code))
-        {
-            echo 'codigo no valido';
-        }
-        else
-        {
+        header('Content-Type: application/json');
+    
         	include("conect.php");
             $enlace =  mysql_connect($hostBD, $userBD, $passBD);
-			$query=mysql_query('create database if not exists usersb',$enlace);
 			mysql_select_db("usersb",$enlace);
-			$sql = "UPDATE usuarios SET code='y' WHERE code='$code'";
+			$sql = "INSERT INTO post (creador,texto) VALUES ('$_REQUEST[creador]','$_REQUEST[texto]')";
 			$rec = mysql_query($sql,$enlace);
-        }	
+            mysql_close($enlace);
+        	$result = $rec;
+            echo json_encode($result);
     } 
+
+
+     function saveComment(){
+        header('Content-Type: application/json');
+    
+            include("conect.php");
+            $enlace =  mysql_connect($hostBD, $userBD, $passBD);
+            mysql_select_db("usersb",$enlace);
+            /*$sql = "SELECT id from post WHERE id=$_REQUEST[id]";
+            $rec = mysql_query($sql,$enlace);
+            while ($res=mysql_fetch_assoc($rec)) {
+                $id= $res['id'];
+            }*/
+            $sql = "INSERT INTO comment (creador,texto,id) VALUES ('$_REQUEST[creador]','$_REQUEST[texto]',$_REQUEST[id])";
+            $rec = mysql_query($sql,$enlace);
+            mysql_close($enlace);
+            $result =$rec;
+            echo json_encode($result);
+        
+    }
+
+    function getPostId(){
+        header('Content-Type: application/json');
+    
+            include("conect.php");
+            $enlace =  mysql_connect($hostBD, $userBD, $passBD);
+            mysql_select_db("usersb",$enlace);
+            $sql = "SELECT id FROM post WHERE id = ( SELECT MAX( id ) FROM post )";
+            $rec = mysql_query($sql,$enlace);
+            while ($res=mysql_fetch_assoc($rec)) {
+                $id= $res['id'];
+            }
+            mysql_close($enlace);
+            $result =$id;
+            echo json_encode($result);
+        
+    }
 
     function LoginUser()
     {
@@ -149,70 +160,90 @@
     function LogOut()
     {
         header('Content-Type: application/json');
-    	/*session_start();
-        $_SESSION['loginUser']=NULL;
-        unset($_SESSION['loginUser']);
-        session_destroy();
-        $result = array("msg"=>"logout exitoso", "user"=>" $_SESSION[loginUser]");
-            echo json_encode($result);*/
-
+        session_start();
         if(!$_SESSION){
-            return json_encode("No tienes sesion");
-            
+            $result = array("mensaje"=>" no tienes sesion");
+            echo json_encode($result);
         }else{
-            $_SESSION=null;
+            $_SESSION['loginUser']=null;
             session_destroy();
-            return json_encode("Sesion terminada");
+            $result = array("mensaje"=>" sesion terminada");
+            echo json_encode($result);
+            
+            
+            
         }
 
     }
 
     function checkLogin(){
         header('Content-Type: application/json');
-       	if(isset($_SESSION['user']) && $_SESSION['user']!=""){
-            $result = array("user"=>" $_SESSION[loginUser]");
-       		return json_encode($result);
-       	}
-    }
-
-    
-
-    
-
-    
-
-    
-
-    function subirArchivo () {
-        if (isset($_FILES['archivo'])) {
-            $archivo = $_FILES['archivo'];
-            $extension = pathinfo($archivo['name'], PATHINFO_EXTENSION);
-            $time = time();
-            $nombre = "{$_POST['nombre_archivo']}.$extension";
-            if (move_uploaded_file($archivo['tmp_name'], "archivos_subidos/$nombre")) {
-                echo 1;
-            } else {
-                echo 0;
-            }
+        session_start();
+       	if(isset($_SESSION['loginUser'])){
+            $result = array("msg"=>"checklogin exitoso", "user"=>"$_SESSION[loginUser]");
+       		echo json_encode($result);
+       	}else{
+             $result = array("msg"=>"checklogin NO exitoso", "user"=>"$_SESSION[loginUser]");
+            echo json_encode($result);
         }
     }
-    function modComp($id,$code)
-    {
-        include("conect.php");
-        $enlace =  mysql_connect($hostBD, $userBD, $passBD);
-        mysql_select_db("proyects",$enlace);
-        $sql = "UPDATE components SET add_comp='$code' WHERE id_comp='$id'";
-        $rec = mysql_query($sql,$enlace);
-    } 
 
-    function delComp($id)
-    {
-        include("conect.php");
-        $enlace =  mysql_connect($hostBD, $userBD, $passBD);
-        mysql_select_db("proyects",$enlace);
-        $sql = "DELETE FROM components WHERE id_comp = '$id'";
-        $rec = mysql_query($sql,$enlace);
-    } 
+    
+    function getAllPostIds(){
+        header('Content-Type: application/json');
+    
+            include("conect.php");
+            $enlace =  mysql_connect($hostBD, $userBD, $passBD);
+            mysql_select_db("usersb",$enlace);
+            $sql = "SELECT id FROM post";
+            $rec = mysql_query($sql,$enlace);
+            $id=array();
+            while ($res=mysql_fetch_assoc($rec)) {
+                array_push($id, $res['id']);
+            }
+            mysql_close($enlace);
+            $result =$id;
+            echo json_encode($result);
+    }
+
+    
+    function getAllPostNames(){
+        header('Content-Type: application/json');
+    
+            include("conect.php");
+            $enlace =  mysql_connect($hostBD, $userBD, $passBD);
+            mysql_select_db("usersb",$enlace);
+            $sql = "SELECT creador FROM post";
+            $rec = mysql_query($sql,$enlace);
+            $creador=array();
+            while ($res=mysql_fetch_assoc($rec)) {
+                array_push($creador, $res['creador']);
+            }
+            mysql_close($enlace);
+            $result =$creador;
+            echo json_encode($result);
+    }
+
+
+    function getAllPostTexts(){
+        header('Content-Type: application/json');
+    
+            include("conect.php");
+            $enlace =  mysql_connect($hostBD, $userBD, $passBD);
+            mysql_select_db("usersb",$enlace);
+            $sql = "SELECT texto FROM post";
+            $rec = mysql_query($sql,$enlace);
+            $texto=array();
+            while ($res=mysql_fetch_assoc($rec)) {
+                array_push($texto, $res['texto']);
+            }
+            mysql_close($enlace);
+            $result =$texto;
+            echo json_encode($result);
+    }
+    
+
+    
 
     
     function crearZip()

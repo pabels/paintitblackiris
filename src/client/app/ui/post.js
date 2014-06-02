@@ -1,12 +1,6 @@
 iris.ui(function(self) {
-	self.settings({
-    y: c
-  });
-	 var c='';
-   iris.on("Sesion_iniciada",function(data){
-    debugger
-      c=data;
-    });
+	
+	 var postResource = iris.resource(iris.path.resource.resource);
 self.create = function() {
    
     self.tmplMode(self.APPEND);
@@ -23,22 +17,38 @@ self.create = function() {
         self.get("apply-comment").toggleClass('item-hidden ');
       }
      );
-    
+     var id=0;
 
-     var z=c || self.setting("y");
+     setTimeout(function(){
+        postResource.getPostId(function(data){
+        id=data;
+     });},2000);
+
      self.get("apply-comment").click(function(){
       if(self.get("comment-text").val()!=""){
-          self.ui("contenedor-post", iris.path.ui.comment.js,{x: z}).inflate(post={
+          self.ui("contenedor-post", iris.path.ui.comment.js,{x: postResource.user || 'Unknown'}).inflate(post={
           "comment-text": self.get("comment-text").val()
         });
       }else{
         alert("No puedes crear un post vacio.");
       }
+      var name = postResource.user || 'Unknown';
+      var text = self.get("comment-text").val();
+      postResource.saveComment(name, text, id, function(data){
+          console.log(data);
+      });
+
+
       self.get("comment-text").val("");
       self.get("comment-text").toggleClass('item-hidden ');
         self.get("apply-comment").toggleClass('item-hidden ');
     });
 
+    //getAllCommentName
+    //gatAllCommentText
+    
+    //recuperar y pintar sus comentarios
+   
 };
   
   self.awake = function() {

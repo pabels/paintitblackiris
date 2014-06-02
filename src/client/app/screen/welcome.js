@@ -5,10 +5,10 @@ iris.screen(function(self) {
 	self.create = function() {
 
   		resource.checkLogin(function(data) {
-  			debugger
+  			self.inflate({completed:resource.user});
 
   		});
-
+  		
 		iris.on("Sesion_iniciada",function(data){
 			self.inflate({completed:data});
 			
@@ -30,10 +30,11 @@ iris.screen(function(self) {
 		});
 
 		self.get("logout").click(function(){
+			resource.logout(function(data) {
+  			self.inflate({completed:resource.user});
 
-			resource.logout(function(data){
-	          console.log(data);
-	      	});
+  		});
+			
 		});
 
 		

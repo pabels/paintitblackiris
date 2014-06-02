@@ -26,38 +26,38 @@ class checklogin {
 }
 
 
-class confirm {
-    function get($code) {
-		ConfirmUser($code);
+class savePost {
+    function post() {
+		savePost();
     }
 }
 
-class addapp {
+class saveComment {
     function post() {
-    	addApp();
+    	saveComment();
     }
 }
 
-class showapp {
+class getPostId {
     function post() {
-    	showApp();
+    	getPostId();
     }
 }
 
-class addcomp {
+class getAllPostIds {
     function post() {
-        addcomp();
+        getAllPostIds();
     }
 }
 
-class showcomp {
+class getAllPostNames {
     function post() {
-        showcomp();
+        getAllPostNames();
     }
 }
-class subir {
+class getAllPostTexts {
     function post() {
-        subirArchivo();
+        getAllPostTexts();
     }
 }
 class add {
@@ -89,12 +89,12 @@ Toro::serve(array(
 	"/register" => "register",
 	"/logout" => "logout",
 	"/checklogin" => "checkLogin",
-	"/code/:alpha" => "confirm",
-    "/addApp" => "addapp",
-	"/showApp" => "showapp",
-    "/addcomp" => "addcomp",
-    "/showcomp" => "showcomp",
-    "/subirArchivo" => "subir",
+	"/savePost" => "savePost",
+    "/saveComment" => "saveComment",
+	"/getPostId" => "getPostId",
+    "/getAllPostIds" => "getAllPostIds",
+    "/getAllPostNames" => "getAllPostNames",
+    "/getAllPostTexts" => "getAllPostTexts",
     "/add" => "add",
     "/del" => "del",
     "/crearhtml" => "crearhtml",
