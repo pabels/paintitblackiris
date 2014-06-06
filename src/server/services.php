@@ -31,40 +31,31 @@
         {
         	$pass=md5($_REQUEST['pass']);
         	$code=md5(createRandomCode());
-        	//if(SendUserConfirmationEmail($_REQUEST['name'],$_REQUEST['mail'],$code)){
 				$sql = "INSERT INTO usuarios (name,user,mail,pass,code) VALUES ('$_REQUEST[name]','$_REQUEST[user]','$_REQUEST[mail]','$pass','$code')";
             	$rec = mysql_query($sql,$enlace);
 				$result = array("msg"=>"registro exitoso", "user"=>"$_REQUEST[user]");
             echo json_encode($result);
-       		//}
-       		//else
-       		//{
-       			//echo 'ERROR: error al enviar confirmacion';
-       		//}
         }
         else{
         	 echo "ya existe ese usuario";
         }
     }
+  function createRandomCode() { 
+        $chars = "abcdefghijkmnopqrstuvwxyz023456789"; 
+        srand((double)microtime()*1000000); 
+        $i = 0; 
+        $pass = '' ; 
 
-    function createRandomCode() { 
-	    $chars = "abcdefghijkmnopqrstuvwxyz023456789"; 
-	    srand((double)microtime()*1000000); 
-	    $i = 0; 
-	    $pass = '' ; 
+        while ($i <= 7) { 
+            $num = rand() % 33; 
+            $tmp = substr($chars, $num, 1); 
+            $pass = $pass . $tmp; 
+            $i++; 
+        } 
 
-	    while ($i <= 7) { 
-	        $num = rand() % 33; 
-	        $tmp = substr($chars, $num, 1); 
-	        $pass = $pass . $tmp; 
-	        $i++; 
-	    } 
+        return $pass; 
 
-	    return $pass; 
-
-	}
-
-   
+    }
 
     function savePost(){
 
@@ -73,7 +64,7 @@
         	include("conect.php");
             $enlace =  mysql_connect($hostBD, $userBD, $passBD);
 			mysql_select_db("usersb",$enlace);
-			$sql = "INSERT INTO post (creador,texto) VALUES ('$_REQUEST[creador]','$_REQUEST[texto]')";
+			$sql = "INSERT INTO post (creador,texto,fecha) VALUES ('$_REQUEST[creador]','$_REQUEST[texto]','$_REQUEST[fecha]')";
 			$rec = mysql_query($sql,$enlace);
             mysql_close($enlace);
         	$result = $rec;
@@ -92,7 +83,7 @@
             while ($res=mysql_fetch_assoc($rec)) {
                 $id= $res['id'];
             }*/
-            $sql = "INSERT INTO comment (creador,texto,id) VALUES ('$_REQUEST[creador]','$_REQUEST[texto]',$_REQUEST[id])";
+            $sql = "INSERT INTO comment (creador,texto,fecha,id) VALUES ('$_REQUEST[creador]','$_REQUEST[texto]','$_REQUEST[fecha]',$_REQUEST[id])";
             $rec = mysql_query($sql,$enlace);
             mysql_close($enlace);
             $result =$rec;
@@ -111,6 +102,7 @@
             while ($res=mysql_fetch_assoc($rec)) {
                 $id= $res['id'];
             }
+
             mysql_close($enlace);
             $result =$id;
             echo json_encode($result);
@@ -157,8 +149,7 @@
        mysql_close($enlace);  
     }
 
-    function LogOut()
-    {
+    function LogOut() {
         header('Content-Type: application/json');
         session_start();
         if(!$_SESSION){
@@ -169,9 +160,6 @@
             session_destroy();
             $result = array("mensaje"=>" sesion terminada");
             echo json_encode($result);
-            
-            
-            
         }
 
     }
@@ -219,59 +207,240 @@
             while ($res=mysql_fetch_assoc($rec)) {
                 array_push($creador, $res['creador']);
             }
-            mysql_close($enlace);
-            $result =$creador;
-            echo json_encode($result);
-    }
 
-
-    function getAllPostTexts(){
-        header('Content-Type: application/json');
-    
-            include("conect.php");
-            $enlace =  mysql_connect($hostBD, $userBD, $passBD);
-            mysql_select_db("usersb",$enlace);
             $sql = "SELECT texto FROM post";
             $rec = mysql_query($sql,$enlace);
             $texto=array();
             while ($res=mysql_fetch_assoc($rec)) {
                 array_push($texto, $res['texto']);
             }
+
+            $sql = "SELECT fecha FROM post";
+            $rec = mysql_query($sql,$enlace);
+            $fecha=array();
+            while ($res=mysql_fetch_assoc($rec)) {
+                array_push($fecha, $res['fecha']);
+            }
+
+            $sql = "SELECT id FROM post";
+            $rec = mysql_query($sql,$enlace);
+            $id=array();
+            while ($res=mysql_fetch_assoc($rec)) {
+                array_push($id, $res['id']);
+            }
+
             mysql_close($enlace);
-            $result =$texto;
+            $result = array("creador"=>$creador, "texto"=>$texto, "fecha"=>$fecha, "id"=>$id);
+            echo json_encode($result);
+    }
+
+
+    function getPostData(){
+        header('Content-Type: application/json');
+    
+            include("conect.php");
+            $enlace =  mysql_connect($hostBD, $userBD, $passBD);
+            mysql_select_db("usersb",$enlace);
+            $sql = "SELECT creador FROM post WHERE id='$_REQUEST[id]'";
+            $rec = mysql_query($sql,$enlace);
+            $creador="";
+            while ($res=mysql_fetch_assoc($rec)) {
+                $creador=$res['creador'];
+            }
+            
+            $sql = "SELECT texto FROM post WHERE id='$_REQUEST[id]'";
+            $rec = mysql_query($sql,$enlace);
+            $texto="";
+            while ($res=mysql_fetch_assoc($rec)) {
+                $texto=$res['texto'];
+            }
+
+            $sql = "SELECT fecha FROM post WHERE id='$_REQUEST[id]'";
+            $rec = mysql_query($sql,$enlace);
+            $fecha="";
+            while ($res=mysql_fetch_assoc($rec)) {
+                $fecha=$res['fecha'];
+            }
+
+            mysql_close($enlace);
+            $result = array("creador"=>$creador, "texto"=>$texto, "fecha"=>$fecha);
             echo json_encode($result);
     }
     
-
+    function getCommentData(){
+        header('Content-Type: application/json');
     
-
-    
-    function crearZip()
-    {
-        $zip = new ZipArchive;
-        if ($zip->open('../../archivos.zip') === TRUE) {
-            $zip->deleteName('index.html');
-            $zip->deleteName('archivos_subidos/');
-            $zip->addFile('../../example.html', 'index.html');
-            $directorio = opendir("archivos_subidos"); //ruta actual
-            while ($archivo = readdir($directorio)) //obtenemos un archivo y luego otro sucesivamente
-            {
-                if (is_dir($archivo))//verificamos si es o no un directorio
-                {
-                    echo 'maaaaaaaal<br>';
-                }
-                else
-                {
-                    $zip->addFile('archivos_subidos/'.$archivo, 'server/loginRegister/archivos_subidos/'.$archivo);
-                    echo 'bien<br>';
-                }
+            include("conect.php");
+            $enlace =  mysql_connect($hostBD, $userBD, $passBD);
+            mysql_select_db("usersb",$enlace);
+            $sql = "SELECT creador FROM comment WHERE id='$_REQUEST[id]'";
+            $rec = mysql_query($sql,$enlace);
+            $creador=array();
+            while ($res=mysql_fetch_assoc($rec)) {
+                array_push($creador, $res['creador']);
             }
-            $zip->close();
-            echo 'ok';
-        } else {
-            echo 'failed';
-        }
+            
+            $sql = "SELECT texto FROM comment WHERE id='$_REQUEST[id]'";
+            $rec = mysql_query($sql,$enlace);
+            $texto=array();
+            while ($res=mysql_fetch_assoc($rec)) {
+               array_push($texto, $res['texto']);
+            }
+
+            $sql = "SELECT fecha FROM comment WHERE id='$_REQUEST[id]'";
+            $rec = mysql_query($sql,$enlace);
+            $fecha=array();
+            while ($res=mysql_fetch_assoc($rec)) {
+               array_push($fecha, $res['fecha']);
+            }
+
+            mysql_close($enlace);
+            $result = array("creador"=>$creador, "texto"=>$texto, "fecha"=>$fecha);
+            echo json_encode($result);
+    }
+    
+    function editPost(){
+
+        header('Content-Type: application/json');
+    
+            include("conect.php");
+            $enlace =  mysql_connect($hostBD, $userBD, $passBD);
+            mysql_select_db("usersb",$enlace);
+            $sql = "UPDATE post SET texto='$_REQUEST[texto]' WHERE id='$_REQUEST[id]'";
+            $rec = mysql_query($sql,$enlace);
+            mysql_close($enlace);
+            $result = $rec;
+            echo json_encode($result);
     }
 
+    function deletePost(){
+
+        header('Content-Type: application/json');
+            include("conect.php");
+            $enlace =  mysql_connect($hostBD, $userBD, $passBD);
+            mysql_select_db("usersb",$enlace);
+            $sql = "DELETE FROM post WHERE id='$_REQUEST[id]'";
+            $rec = mysql_query($sql,$enlace);
+            $sql = "DELETE FROM comment WHERE id='$_REQUEST[id]'";
+            $rec = mysql_query($sql,$enlace);
+            mysql_close($enlace);
+            $result = $rec;
+            echo json_encode($result);
+    }
+
+    function getLastPostData(){
+        header('Content-Type: application/json');
+    
+            include("conect.php");
+            $enlace =  mysql_connect($hostBD, $userBD, $passBD);
+            mysql_select_db("usersb",$enlace);
+            $sql = "SELECT creador FROM post WHERE id=( SELECT MAX( id ) FROM post )";
+            $rec = mysql_query($sql,$enlace);
+            $creador="";
+            while ($res=mysql_fetch_assoc($rec)) {
+                $creador=$res['creador'];
+            }
+            
+            $sql = "SELECT texto FROM post WHERE id=( SELECT MAX( id ) FROM post )";
+            $rec = mysql_query($sql,$enlace);
+            $texto="";
+            while ($res=mysql_fetch_assoc($rec)) {
+                $texto=$res['texto'];
+            }
+
+            $sql = "SELECT fecha FROM post WHERE id=( SELECT MAX( id ) FROM post )";
+            $rec = mysql_query($sql,$enlace);
+            $fecha="";
+            while ($res=mysql_fetch_assoc($rec)) {
+                $fecha=$res['fecha'];
+            }
+
+            $sql = "SELECT id FROM post WHERE id = ( SELECT MAX( id ) FROM post )";
+            $rec = mysql_query($sql,$enlace);
+            $id="";
+            while ($res=mysql_fetch_assoc($rec)) {
+                $id= $res['id'];
+            }
+            mysql_close($enlace);
+            $result = array("creador"=>$creador, "texto"=>$texto, "fecha"=>$fecha, "id"=>$id);
+            echo json_encode($result);
+    }
+
+
+    function MisPost(){
+        header('Content-Type: application/json');
+    
+            include("conect.php");
+            $enlace =  mysql_connect($hostBD, $userBD, $passBD);
+            mysql_select_db("usersb",$enlace);
+            $sql = "SELECT creador FROM post WHERE creador='$_REQUEST[creador]'";
+            $rec = mysql_query($sql,$enlace);
+            $creador=array();
+            while ($res=mysql_fetch_assoc($rec)) {
+               array_push($creador, $res['creador']);
+            }
+            
+            $sql = "SELECT texto FROM post WHERE creador='$_REQUEST[creador]'";
+            $rec = mysql_query($sql,$enlace);
+            $texto=array();
+            while ($res=mysql_fetch_assoc($rec)) {
+               array_push($texto, $res['texto']);
+            }
+
+            $sql = "SELECT fecha FROM post WHERE creador='$_REQUEST[creador]'";
+            $rec = mysql_query($sql,$enlace);
+            $fecha=array();
+            while ($res=mysql_fetch_assoc($rec)) {
+                array_push($fecha, $res['fecha']);
+            }
+
+            $sql = "SELECT id FROM post WHERE creador='$_REQUEST[creador]'";
+            $rec = mysql_query($sql,$enlace);
+            $id=array();
+            while ($res=mysql_fetch_assoc($rec)) {
+                array_push($id, $res['id']);
+            }
+            mysql_close($enlace);
+            $result = array("creador"=>$creador, "texto"=>$texto, "fecha"=>$fecha, "id"=>$id);
+            echo json_encode($result);
+    }
+
+    function OtrosPost(){
+        header('Content-Type: application/json');
+    
+            include("conect.php");
+            $enlace =  mysql_connect($hostBD, $userBD, $passBD);
+            mysql_select_db("usersb",$enlace);
+            $sql = "SELECT creador FROM post WHERE creador<>'$_REQUEST[creador]'";
+            $rec = mysql_query($sql,$enlace);
+            $creador=array();
+            while ($res=mysql_fetch_assoc($rec)) {
+               array_push($creador, $res['creador']);
+            }
+            
+            $sql = "SELECT texto FROM post WHERE creador<>'$_REQUEST[creador]'";
+            $rec = mysql_query($sql,$enlace);
+            $texto=array();
+            while ($res=mysql_fetch_assoc($rec)) {
+               array_push($texto, $res['texto']);
+            }
+
+            $sql = "SELECT fecha FROM post WHERE creador<>'$_REQUEST[creador]'";
+            $rec = mysql_query($sql,$enlace);
+            $fecha=array();
+            while ($res=mysql_fetch_assoc($rec)) {
+                array_push($fecha, $res['fecha']);
+            }
+
+            $sql = "SELECT id FROM post WHERE creador<>'$_REQUEST[creador]'";
+            $rec = mysql_query($sql,$enlace);
+            $id=array();
+            while ($res=mysql_fetch_assoc($rec)) {
+                array_push($id, $res['id']);
+            }
+            mysql_close($enlace);
+            $result = array("creador"=>$creador, "texto"=>$texto, "fecha"=>$fecha, "id"=>$id);
+            echo json_encode($result);
+    }
 
 ?>

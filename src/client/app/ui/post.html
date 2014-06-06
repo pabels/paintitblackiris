@@ -1,11 +1,17 @@
 
 <div class="well">
   <h3 data-id="nombre" data-jq-text="completed" class="poster-name"></h3>
-  dice:
+  Creado el: <label data-id="fecha"></label>
   <div class="forum-post">
     <textarea readonly data-id="post" data-jq-html="text"></textarea>
+    <textarea class="form-control item-hidden" data-id="edit-text"></textarea>
   </div><br>
-  <button class="btn btn-primary" data-id="comment-button">Comentar</button> <button class="btn btn-primary item-hidden" data-id="apply-comment">Enviar</button> <span data-id="barra_votacion" id="votar">Votar: </span><br>
+  <button class="btn btn-primary" data-id="comment-button">Comentar</button>
+   <button class="btn btn-primary item-hidden" data-id="apply-comment">Enviar</button>
+   <button class="btn btn-primary item-hidden" data-id="editar">Editar</button>
+   <button class="btn btn-primary item-hidden" data-id="aplicar">Aplicar</button>
+   <button class="btn btn-primary item-hidden" data-id="eliminar">Eliminar</button>
+   <br>
    <textarea class="form-control item-hidden" data-id="comment-text"></textarea>
   <hr>
   <div data-id="contenedor-post">

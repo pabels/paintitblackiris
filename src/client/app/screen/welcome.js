@@ -11,7 +11,6 @@ iris.screen(function(self) {
   		
 		iris.on("Sesion_iniciada",function(data){
 			self.inflate({completed:data});
-			
 			modal.get().modal('hide');
 	
 		});
@@ -19,7 +18,16 @@ iris.screen(function(self) {
 		self.tmpl(iris.path.screen.welcome.html);
 		modal=self.ui("modal", iris.path.ui.logger.js);
 		
-		self.screens("contenedor", [["star",iris.path.screen.star.js],["tools",iris.path.screen.tools.js], ["contact",iris.path.screen.contact.js],["proyects",iris.path.screen.proyects.js],["car_gallery",iris.path.screen.car_gallery.js],["foro",iris.path.screen.foro.js],["registro",iris.path.screen.registro.js],["workshop",iris.path.screen.workshop.js]]);
+		self.screens("contenedor", [["star",iris.path.screen.star.js],
+			["tools",iris.path.screen.tools.js],
+			["contact",iris.path.screen.contact.js],
+			["proyects",iris.path.screen.proyects.js],
+			["car_gallery",iris.path.screen.car_gallery.js],
+			["foro",iris.path.screen.foro.js],
+			["registro",iris.path.screen.registro.js],
+			["workshop",iris.path.screen.workshop.js],
+			["postactual",iris.path.screen.postactual.js]
+		]);
 		if(location.hash==="#" || location.hash===""){
 			iris.navigate("#/star");
 		}

@@ -1,13 +1,13 @@
 iris.ui(function(self) {
-	self.settings({
-    x: 0
-  });
+	
 self.create = function() {
   
     self.tmplMode(self.APPEND);
     self.tmpl(iris.path.ui.comment.html);
     console.log("Created comment");
-   	self.get("nombrecomentador").text(self.setting("x"));
+   	self.get("nombrecomentador").text(self.setting("y"));
+    self.get("comment-textarea").text(self.setting("k"));
+    self.get("fecha").text(self.setting("z"));
    		
 };
   

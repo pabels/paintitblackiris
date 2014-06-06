@@ -55,32 +55,44 @@ class getAllPostNames {
         getAllPostNames();
     }
 }
-class getAllPostTexts {
+class getPostData {
     function post() {
-        getAllPostTexts();
+        getPostData();
     }
 }
-class add {
+class getLastPostData {
     function post() {
-        modComp($_POST['id'],$_POST['code']);
-    }
-}
-
-class del {
-    function post() {
-        delComp($_POST['id']);
+        getLastPostData();
     }
 }
 
-class crearhtml {
+class deletePost {
     function post() {
-        crearHtml();
+        deletePost();
     }
 }
 
-class crearzip {
+class editPost {
     function post() {
-        crearZip();
+        editPost();
+    }
+}
+
+class getCommentData {
+    function post() {
+        getCommentData();
+    }
+}
+
+class MisPost {
+    function post() {
+        MisPost();
+    }
+}
+
+class OtrosPost {
+    function post() {
+        OtrosPost();
     }
 }
 
@@ -94,11 +106,13 @@ Toro::serve(array(
 	"/getPostId" => "getPostId",
     "/getAllPostIds" => "getAllPostIds",
     "/getAllPostNames" => "getAllPostNames",
-    "/getAllPostTexts" => "getAllPostTexts",
-    "/add" => "add",
-    "/del" => "del",
-    "/crearhtml" => "crearhtml",
-    "/crearzip" => "crearzip"
+    "/getPostData" => "getPostData",
+    "/getLastPostData" => "getLastPostData",
+    "/deletePost" => "deletePost",
+    "/MisPost" => "MisPost",
+    "/OtrosPost" => "OtrosPost",
+    "/editPost" => "editPost",
+    "/getCommentData" => "getCommentData"
 ));
 ?>
 
